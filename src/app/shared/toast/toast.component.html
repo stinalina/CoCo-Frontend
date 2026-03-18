@@ -1,0 +1,13 @@
+@if (this.toastService.toastIds().length > 0) {
+  <div class="toast toast-top toast-end">
+    @for (toast of this.toastService.toastIds(); track $index) {
+      <div class="alert alert-soft"
+        [class.alert-success]="toast.type === ToastType.Success"
+        [class.alert-error]="toast.type === ToastType.Error"
+        [class.alert-warning]="toast.type === ToastType.Warning"
+        [class.alert-info]="toast.type === ToastType.Info">
+        <span>{{toast.message}}</span>
+      </div>
+    }
+  </div>
+}

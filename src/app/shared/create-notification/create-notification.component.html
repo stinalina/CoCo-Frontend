@@ -1,0 +1,68 @@
+<form (ngSubmit)="this.startConversation()"
+  class="
+    shadow-lg 
+    md:p-2.5 xl:p-3 p-2
+    rounded-lg bg-base-100 border-1 
+    max-h-screen xl:max-h-none 
+    overflow-y-auto md:overflow-y-auto xl:overflow-y-visible"
+    >
+  <div class="flex flex-col md:gap-3 xl:gap-4 gap-2 justify-around
+     max-h-[35vh] xl:max-h-none overflow-hidden text-sm md:text-sm xl:text-base">
+    <div class="flex flex-col w-full align-start text-sm md:text-sm xl:text-base">
+      <label class="text-left md:ml-0.5 xl:ml-1 mb-1">
+        Wohin soll's gehen?
+      </label>
+      <textarea class="h-[30vh] text-sm md:text-sm xl:text-base
+        border-1 p-2"
+        placeholder="Beschreibe dein gewünschtes Reiseziel, wir kümmern uns um den Rest!"
+        [(ngModel)]="this.initialQuestion"
+        [ngModelOptions]="{ standalone: true }">
+      </textarea>
+    </div>
+
+    <div class="flex flex-col w-full align-start text-sm md:text-sm xl:text-base">
+      <label for="create-notification-date-time" class="text-left md:ml-0.5 xl:ml-1 mb-1">
+        Reisedaten eingeben:
+      </label>
+      <input id="create-notification-date-time" class="input input-sm md:input-sm xl:input-md w-full"
+        type="date"
+        [min]="this.now"/>
+    </div>
+
+    <div class="flex flex-col text-sm md:text-sm xl:text-base">
+      <label for="create-notifcation-mail" class="text-left md:ml-0.5 xl:ml-1 mb-1">
+        Sende fertige Reise an:
+      </label>
+      <label class="input input-sm md:input-sm xl:input-md validator w-full">
+        <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <g
+            stroke-linejoin="round"
+            stroke-linecap="round"
+            stroke-width="2.5"
+            fill="none"
+            stroke="currentColor"
+          >
+            <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+          </g>
+        </svg>
+        <input id="create-notifcation-mail"
+          class="pl-1"
+          type="email" placeholder="mail@site.com" />
+      </label>
+      <div class="validator-hint hidden">Enter valid email address</div>
+    </div>
+
+    <div class="flex justify-center">
+
+      @let sending = this.sendingNotification();
+      <button type="submit" class="btn btn-sm md:btn-sm xl:btn-md" id="create-notification-apply"
+        [class.btn-disabled]="sending">
+        @if (sending) {
+          <span class="loading loading-spinner"></span>
+        }
+        {{ sending ? 'Creation...' : 'Reise erstellen' }}
+      </button>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,33 @@
+.submenu a:hover {
+  text-decoration: underline
+}
+
+.envelope-icon {
+  position: relative;
+  margin-bottom: -0.1rem;
+  display: inline-block;
+}
+
+.envelope-closed,
+.envelope-open {
+  transition: opacity 0.3s ease;
+}
+
+.envelope-icon .envelope-closed {
+  opacity: 1;
+}
+
+.envelope-icon .envelope-open {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.envelope-icon:hover .envelope-closed {
+  opacity: 0;
+}
+
+.envelope-icon:hover .envelope-open {
+  opacity: 1;
+}

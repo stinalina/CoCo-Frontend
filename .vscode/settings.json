@@ -1,0 +1,8 @@
+{
+ "typescript.preferences.importModuleSpecifier":"non-relative",
+ "javascript.preferences.importModuleSpecifier": "non-relative",
+  "terminal.integrated.defaultProfile.linux": "bash",
+  "files.associations": {
+    "*.css": "tailwindcss"
+  }
+}

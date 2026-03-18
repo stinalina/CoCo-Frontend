@@ -1,0 +1,67 @@
+{
+  "name": "remember-me",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test",
+    "test-workflow": "ng test --browsers=ChromeHeadless --watch=false --code-coverage",
+    "codegen": "graphql-codegen --config codegen.ts",
+    "e2e": "playwright test"
+  },
+  "prettier": {
+    "printWidth": 100,
+    "singleQuote": true,
+    "overrides": [
+      {
+        "files": "*.html",
+        "options": {
+          "parser": "angular"
+        }
+      }
+    ]
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/common": "^20.3.0",
+    "@angular/compiler": "^20.3.0",
+    "@angular/core": "^20.3.0",
+    "@angular/forms": "^20.3.0",
+    "@angular/platform-browser": "^20.3.0",
+    "@angular/router": "^20.3.0",
+    "@apollo/client": "^4.0.7",
+    "apollo-angular": "^12.1.0",
+    "graphql": "^16.11.0",
+    "ngx-editor": "^19.0.0-beta.1",
+    "postcss": "^8.5.6",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.15.0"
+  },
+  "devDependencies": {
+    "@angular/build": "^20.3.5",
+    "@angular/cli": "^20.3.5",
+    "@angular/compiler-cli": "^20.3.0",
+    "@graphql-codegen/cli": "^6.0.1",
+    "@graphql-codegen/typescript": "^5.0.2",
+    "@graphql-codegen/typescript-apollo-angular": "^4.0.1",
+    "@graphql-codegen/typescript-operations": "^5.0.2",
+    "@playwright/test": "^1.57.0",
+    "@tailwindcss/postcss": "^4.1.14",
+    "@types/graphql": "^14.2.3",
+    "@types/jasmine": "~5.1.0",
+    "@types/node": "^25.0.3",
+    "baseline-browser-mapping": "^2.9.19",
+    "daisyui": "^5.2.3",
+    "jasmine-core": "~5.9.0",
+    "karma": "~6.4.0",
+    "karma-chrome-launcher": "~3.2.0",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.1.0",
+    "tailwindcss": "^4.1.14",
+    "typescript": "~5.9.2"
+  }
+}
