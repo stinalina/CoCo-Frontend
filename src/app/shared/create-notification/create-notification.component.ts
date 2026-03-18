@@ -1,11 +1,10 @@
-import { AsyncPipe, CommonModule, DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { ResponseStreamChunk, TravelAgentService } from '@app/services/travel-agent.service';
-import { LocalStorageService } from '@services/local-storage.service';
-import { SESSION_STORAGE } from '@shared/storage.token';
-import { finalize, Observable } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormsModule } from '@angular/forms';
+import { ToastService, ToastType } from '@app/services/toast.service';
+import { ResponseStreamChunk, TravelAgentService } from '@app/services/travel-agent.service';
+import { catchError, EMPTY, finalize, Observable, tap } from 'rxjs';
 
 @Component({
   selector: 'reme-create-notification',
@@ -18,8 +17,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 })
 export class CreateNotificationComponent  {
   private readonly destroyRef = inject(DestroyRef);
-  private readonly sessionStorage = inject(SESSION_STORAGE);
-  private readonly localStorageService = inject(LocalStorageService);
+  private readonly toastService = inject(ToastService);
 
   private readonly travelAgentService = inject(TravelAgentService);
   public initialQuestion: string = '';
@@ -42,7 +40,13 @@ export class CreateNotificationComponent  {
     var answer: string = '';
     
     this.travelAgentService.streamConversation(this.initialQuestion).pipe(
+      tap(() => this.toastService.showToast('Ihre Reise wird erstellt.', ToastType.Info)),
       takeUntilDestroyed(this.destroyRef),
+      catchError(error => {
+        this.toastService.showToast('Ihre Reise konnte nicht erstellt werden.', ToastType.Error);
+        console.log(error);
+        return EMPTY;
+      }),
       finalize(() => {
         console.log(answer);
         this.sendingNotification.set(false)
