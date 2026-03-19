@@ -9,9 +9,6 @@
   <div class="flex flex-col md:gap-3 xl:gap-4 gap-2 justify-around
      max-h-[35vh] xl:max-h-none overflow-hidden text-sm md:text-sm xl:text-base">
     <div class="flex flex-col w-full align-start text-sm md:text-sm xl:text-base">
-      <label class="text-left md:ml-0.5 xl:ml-1 mb-1">
-        Wohin soll's gehen?
-      </label>
       <textarea class="h-[30vh] text-sm md:text-sm xl:text-base
         border-1 p-2"
         placeholder="Beschreibe dein gewünschtes Reiseziel, wir kümmern uns um den Rest!"
@@ -53,7 +50,7 @@
       <div class="validator-hint hidden">Enter valid email address</div>
     </div>
 
-    <div class="flex justify-center">
+    <div class="flex justify-center gap-1">
 
       @let sending = this.sendingNotification();
       <button type="submit" class="btn btn-sm md:btn-sm xl:btn-md" id="create-notification-apply"
@@ -63,6 +60,14 @@
         }
         {{ sending ? 'Creation...' : 'Reise erstellen' }}
       </button>
+      <button type="button" class="btn btn--md" 
+        [class.btn-disabled]="!this.tripInfoAvailable()"
+        onclick="tripInfo.showModal()">
+        Reise anzeigen</button>
     </div>
   </div>
 </form>
+
+<reme-modal modalId="tripInfo">
+  <reme-text-frame title="Erstellte Reise" [content]="this.responseText()"></reme-text-frame>
+</reme-modal>

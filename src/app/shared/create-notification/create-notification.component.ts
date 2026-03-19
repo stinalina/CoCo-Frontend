@@ -4,6 +4,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { ToastService, ToastType } from '@app/services/toast.service';
 import { ResponseStreamChunk, TravelAgentService } from '@app/services/travel-agent.service';
+import { ModalComponent } from '@app/shared/modal/modal.component';
+import { TextFrameComponent } from '@app/shared/text-frame/text-frame.component';
 import { catchError, EMPTY, finalize, Observable, tap } from 'rxjs';
 
 @Component({
@@ -12,7 +14,9 @@ import { catchError, EMPTY, finalize, Observable, tap } from 'rxjs';
   styleUrl: 'create-notification.component.scss',
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    ModalComponent,
+    TextFrameComponent
   ] 
 })
 export class CreateNotificationComponent  {
@@ -21,11 +25,13 @@ export class CreateNotificationComponent  {
 
   private readonly travelAgentService = inject(TravelAgentService);
   public initialQuestion: string = '';
+  public responseText = signal<string>('');
 
   public chunks$: Observable<ResponseStreamChunk> | null = null;
 
   protected readonly now = this.nextDay;
   protected readonly sendingNotification = signal<boolean>(false);
+  protected readonly tripInfoAvailable = signal<boolean>(false);
 
   private get nextDay(): string {
     const date = new Date();
@@ -35,12 +41,14 @@ export class CreateNotificationComponent  {
 
   public startConversation(): void {
     this.sendingNotification.set(true);
+    this.tripInfoAvailable.set(false);
+    this.responseText.set(''); 
 
     var currentAuthor: string = 'Unknown';
     var answer: string = '';
     
+    this.toastService.showToast('Ihre Reise wird erstellt.', ToastType.Info);
     this.travelAgentService.streamConversation(this.initialQuestion).pipe(
-      tap(() => this.toastService.showToast('Ihre Reise wird erstellt.', ToastType.Info)),
       takeUntilDestroyed(this.destroyRef),
       catchError(error => {
         this.toastService.showToast('Ihre Reise konnte nicht erstellt werden.', ToastType.Error);
@@ -50,6 +58,7 @@ export class CreateNotificationComponent  {
       finalize(() => {
         console.log(answer);
         this.sendingNotification.set(false)
+        this.tripInfoAvailable.set(true); 
       })
     ).subscribe(
       chunk => {
@@ -59,8 +68,12 @@ export class CreateNotificationComponent  {
           currentAuthor = chunk.authorName;
           console.log('\n');
           console.log(currentAuthor + ': ');
+          this.responseText.update(text => 
+            text + (text ? '\n' : '') + `${currentAuthor}:\n`
+          );
         }
         answer += chunk.text;
+        this.responseText.update(text => text + chunk.text);
       }
     );
   }
