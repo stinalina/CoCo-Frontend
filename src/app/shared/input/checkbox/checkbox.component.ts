@@ -1,7 +1,7 @@
 import { Component, input } from '@angular/core';
 
 @Component({
-  selector: 'reme-checkbox',
+  selector: 'coco-checkbox',
   templateUrl: 'checkbox.component.html'
 })
 export class CheckboxComponent {

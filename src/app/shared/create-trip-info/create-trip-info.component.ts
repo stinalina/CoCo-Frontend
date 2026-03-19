@@ -1,17 +1,17 @@
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { ToastService, ToastType } from '@app/services/toast.service';
-import { ResponseStreamChunk, TravelAgentService } from '@app/services/travel-agent.service';
+import { TravelAgentService } from '@app/services/travel-agent.service';
 import { ModalComponent } from '@app/shared/modal/modal.component';
 import { TextFrameComponent } from '@app/shared/text-frame/text-frame.component';
-import { catchError, EMPTY, finalize, Observable, tap } from 'rxjs';
+import { catchError, EMPTY, finalize } from 'rxjs';
 
 @Component({
-  selector: 'reme-create-notification',
-  templateUrl: 'create-notification.component.html',
-  styleUrl: 'create-notification.component.scss',
+  selector: 'coco-create-trip-info',
+  templateUrl: 'create-trip-info.component.html',
+  styleUrl: 'create-trip-info.component.scss',
   imports: [
     CommonModule,
     FormsModule,
@@ -19,7 +19,7 @@ import { catchError, EMPTY, finalize, Observable, tap } from 'rxjs';
     TextFrameComponent
   ] 
 })
-export class CreateNotificationComponent  {
+export class CreateTripInfoComponent  {
   private readonly destroyRef = inject(DestroyRef);
   private readonly toastService = inject(ToastService);
 
@@ -27,17 +27,8 @@ export class CreateNotificationComponent  {
   public initialQuestion: string = '';
   public responseText = signal<string>('');
 
-  public chunks$: Observable<ResponseStreamChunk> | null = null;
-
-  protected readonly now = this.nextDay;
   protected readonly sendingNotification = signal<boolean>(false);
   protected readonly tripInfoAvailable = signal<boolean>(false);
-
-  private get nextDay(): string {
-    const date = new Date();
-    const dateTime = new Date(date.getTime() + 24 * 60 * 60 * 1000); // add one day
-    return new DatePipe('en-US').transform(dateTime, 'yyyy-MM-dd')!;
-  }
 
   public startConversation(): void {
     this.sendingNotification.set(true);

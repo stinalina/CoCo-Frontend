@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'reme-footer',
+  selector: 'coco-footer',
   templateUrl: 'footer.component.html',
   styleUrls: ['footer.component.css'],
 })

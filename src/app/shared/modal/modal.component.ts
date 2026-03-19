@@ -1,7 +1,7 @@
 import { Component, input } from '@angular/core';
 
 @Component({
-  selector: 'reme-modal',
+  selector: 'coco-modal',
   templateUrl: 'modal.component.html',
   styleUrl: 'modal.component.scss',
 })

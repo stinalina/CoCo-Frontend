@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "remember-me": {
+    "coco": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "outputPath": "dist/remember-me",
+            "outputPath": "dist/coco",
             "browser": "src/main.ts",
             "polyfills": [
               "zone.js"
@@ -76,13 +76,13 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "remember-me:build:production"
+              "buildTarget": "coco:build:production"
             },
             "cloud": {
-              "buildTarget": "remember-me:build:cloud"
+              "buildTarget": "coco:build:cloud"
             },
             "development": {
-              "buildTarget": "remember-me:build:development"
+              "buildTarget": "coco:build:development"
             }
           },
           "defaultConfiguration": "development"

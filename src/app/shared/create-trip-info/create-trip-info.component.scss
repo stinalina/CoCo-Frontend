@@ -1,0 +1,26 @@
+.typewriter-placeholder {
+  position: absolute;
+  margin: 8px;
+  color: #888;    
+  pointer-events: none;
+  font-size: 0.875rem;  
+  z-index: 2;
+  white-space: pre-line; 
+  transition: opacity 0.2s;
+}
+
+@media (min-width: 1024px) {
+  .typewriter-placeholder {
+    font-size: 1rem;
+  }
+}
+
+.typewriter-cursor {
+  display: inline-block;
+  width: 1.5em;
+  color: #aaa;
+  font-weight: bold;
+  letter-spacing: 2px;
+  font-size: 1.2em;
+  vertical-align: middle;
+}

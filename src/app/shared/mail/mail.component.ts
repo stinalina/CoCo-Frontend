@@ -3,7 +3,7 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LocalStorageService } from '@app/services/local-storage.service';
 
 @Component({
-  selector: 'reme-mail',
+  selector: 'coco-mail',
   templateUrl: 'mail.component.html',
   imports: [ReactiveFormsModule]
 })

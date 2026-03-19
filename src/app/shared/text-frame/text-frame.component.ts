@@ -1,7 +1,7 @@
 import { Component, input } from "@angular/core";
 
 @Component({
-  selector: 'reme-text-frame',
+  selector: 'coco-text-frame',
   templateUrl: 'text-frame.component.html'
 })
 export class TextFrameComponent {

@@ -22,8 +22,7 @@
         Reisedaten eingeben:
       </label>
       <input id="create-notification-date-time" class="input input-sm md:input-sm xl:input-md w-full"
-        type="date"
-        [min]="this.now"/>
+        type="date"/>
     </div>
 
     <div class="flex flex-col text-sm md:text-sm xl:text-base">
@@ -68,6 +67,6 @@
   </div>
 </form>
 
-<reme-modal modalId="tripInfo">
-  <reme-text-frame title="Erstellte Reise" [content]="this.responseText()"></reme-text-frame>
-</reme-modal>
+<coco-modal modalId="tripInfo">
+  <coco-text-frame title="Erstellte Reise" [content]="this.responseText()"></coco-text-frame>
+</coco-modal>

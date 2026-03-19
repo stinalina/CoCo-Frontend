@@ -3,7 +3,7 @@ import { Component, inject } from "@angular/core";
 import { ToastService, ToastType } from "@services/toast.service";
 
 @Component({
-  'selector': 'reme-toast',
+  'selector': 'coco-toast',
   templateUrl: './toast.component.html',
   imports: [],
 })
