@@ -1,4 +1,4 @@
-<form (ngSubmit)="this.startConversation()"
+<form (ngSubmit)="this.startConversation()" [formGroup]="this.myForm"
   class="
     shadow-lg 
     md:p-2.5 xl:p-3 p-2
@@ -12,17 +12,16 @@
       <textarea class="h-[30vh] text-sm md:text-sm xl:text-base
         border-1 p-2"
         placeholder="Beschreibe dein gewünschtes Reiseziel, wir kümmern uns um den Rest!"
-        [(ngModel)]="this.initialQuestion"
-        [ngModelOptions]="{ standalone: true }">
+        formControlName="initialQuestion">
       </textarea>
     </div>
 
     <div class="flex flex-col w-full align-start text-sm md:text-sm xl:text-base">
       <label for="create-notification-date-time" class="text-left md:ml-0.5 xl:ml-1 mb-1">
-        Reisedaten eingeben:
+        Wann soll es losgehen?
       </label>
       <input id="create-notification-date-time" class="input input-sm md:input-sm xl:input-md w-full"
-        type="date"/>
+        type="date" formControlName="startDate"/>
     </div>
 
     <div class="flex flex-col text-sm md:text-sm xl:text-base">
@@ -44,7 +43,7 @@
         </svg>
         <input id="create-notifcation-mail"
           class="pl-1"
-          type="email" placeholder="mail@site.com" />
+          type="email" placeholder="mail@site.com" formControlName="mail"/>
       </label>
       <div class="validator-hint hidden">Enter valid email address</div>
     </div>
@@ -53,7 +52,7 @@
 
       @let sending = this.sendingNotification();
       <button type="submit" class="btn btn-sm md:btn-sm xl:btn-md" id="create-notification-apply"
-        [class.btn-disabled]="sending">
+        [class.btn-disabled]="!this.canSubmitForm() || sending">
         @if (sending) {
           <span class="loading loading-spinner"></span>
         }

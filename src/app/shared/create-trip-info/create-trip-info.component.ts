@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject, signal } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormsModule } from '@angular/forms';
+import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { FormBuilder, FormsModule, Validators, ReactiveFormsModule } from '@angular/forms';
+import { LocalStorageService } from '@app/services/local-storage.service';
 import { ToastService, ToastType } from '@app/services/toast.service';
 import { TravelAgentService } from '@app/services/travel-agent.service';
 import { ModalComponent } from '@app/shared/modal/modal.component';
@@ -16,21 +17,42 @@ import { catchError, EMPTY, finalize } from 'rxjs';
     CommonModule,
     FormsModule,
     ModalComponent,
-    TextFrameComponent
-  ] 
+    TextFrameComponent,
+    ReactiveFormsModule
+] 
 })
 export class CreateTripInfoComponent  {
   private readonly destroyRef = inject(DestroyRef);
   private readonly toastService = inject(ToastService);
+  private readonly localStorageService = inject(LocalStorageService);
 
   private readonly travelAgentService = inject(TravelAgentService);
-  public initialQuestion: string = '';
+  //public initialQuestion: string = '';
   public responseText = signal<string>('');
 
   protected readonly sendingNotification = signal<boolean>(false);
   protected readonly tripInfoAvailable = signal<boolean>(false);
 
+  protected readonly fb = inject(FormBuilder);
+  protected readonly myForm = this.fb.group({
+    initialQuestion: ['', Validators.required],
+    startDate: [''],
+    endDate: [''],
+    mail: [this.localStorageService.getUserMail() ?? '', Validators.email]
+  });
+
+  protected readonly formStatus = toSignal(this.myForm.statusChanges, {
+    initialValue: this.myForm.status,
+  });
+  public readonly canSubmitForm = computed(() =>  {
+    return this.formStatus() === 'VALID';
+  });
+
   public startConversation(): void {
+    const conversationStart = this.myForm.get('initialQuestion')?.value;
+    if (!conversationStart) {
+      return;
+    }
     this.sendingNotification.set(true);
     this.tripInfoAvailable.set(false);
     this.responseText.set(''); 
@@ -39,7 +61,7 @@ export class CreateTripInfoComponent  {
     var answer: string = '';
     
     this.toastService.showToast('Ihre Reise wird erstellt.', ToastType.Info);
-    this.travelAgentService.streamConversation(this.initialQuestion).pipe(
+    this.travelAgentService.streamConversation(conversationStart).pipe(
       takeUntilDestroyed(this.destroyRef),
       catchError(error => {
         this.toastService.showToast('Ihre Reise konnte nicht erstellt werden.', ToastType.Error);
@@ -49,7 +71,6 @@ export class CreateTripInfoComponent  {
       finalize(() => {
         console.log(answer);
         this.sendingNotification.set(false)
-        this.tripInfoAvailable.set(true); 
       })
     ).subscribe(
       chunk => {
@@ -60,11 +81,16 @@ export class CreateTripInfoComponent  {
           console.log('\n');
           console.log(currentAuthor + ': ');
           this.responseText.update(text => 
-            text + (text ? '\n' : '') + `${currentAuthor}:\n`
+            text + (text ? '\n\n' : '') + `${currentAuthor}:\n`
           );
         }
         answer += chunk.text;
         this.responseText.update(text => text + chunk.text);
+
+        if (chunk.isCompleted) {
+          this.toastService.showToast('Ihre Reise wurde erfolgreich erstellt.', ToastType.Success);
+          this.tripInfoAvailable.set(true); 
+        }
       }
     );
   }
