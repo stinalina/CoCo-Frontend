@@ -63,6 +63,12 @@ export class TravelAgentService {
             try {
               const jsonStr = trimmed.slice(5).trim();
               const chunk: ResponseStreamChunk = JSON.parse(jsonStr);
+
+              if (chunk.text?.includes('Error:')) {
+                observer.error(new Error(chunk.text));
+                return;
+              }
+
               observer.next(chunk);
 
               if (chunk.isCompleted) {
