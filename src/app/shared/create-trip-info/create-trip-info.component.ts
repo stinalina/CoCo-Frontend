@@ -48,9 +48,19 @@ export class CreateTripInfoComponent  {
   });
 
   public readonly responseText = computed(() => {
-    return this.responseChunks()
-      .map(chunk => chunk.text || '')
-      .join('\n');
+    let result = '';
+    let lastAuthor = '';
+    
+    this.responseChunks().forEach(chunk => {
+      if (chunk.authorName && chunk.authorName !== lastAuthor) {
+        if (result) result += '\n\n';
+        result += chunk.authorName + ':\n';
+        lastAuthor = chunk.authorName;
+      }
+      result += chunk.text || '';
+    });
+    
+    return result;
   });
 
   public startConversation(): void {
