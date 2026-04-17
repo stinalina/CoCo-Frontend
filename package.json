@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "cloud": "ng build --configuration cloud && ng serve --configuration cloud",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test-workflow": "ng test --browsers=ChromeHeadless --watch=false --code-coverage",
