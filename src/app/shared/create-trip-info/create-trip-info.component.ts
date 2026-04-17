@@ -51,16 +51,19 @@ export class CreateTripInfoComponent  {
     let result = '';
     let lastAuthor = '';
     
-    this.responseChunks().forEach(chunk => {
+    this.responseChunks().forEach((chunk) => {
       if (chunk.authorName && chunk.authorName !== lastAuthor) {
-        if (result) result += '\n\n';
-        result += chunk.authorName + ':\n';
+        if (result && !result.endsWith('\n')) result += '\n';
+        result += '\n' + chunk.authorName + ':\n';
         lastAuthor = chunk.authorName;
       }
-      result += chunk.text || '';
+      
+      if (chunk.text) {
+        result += chunk.text;
+      }
     });
     
-    return result;
+    return result.trim();
   });
 
   public startConversation(): void {
@@ -88,6 +91,7 @@ export class CreateTripInfoComponent  {
         if (chunk.isCompleted) {
           this.toastService.showToast('Ihre Reise wurde erfolgreich erstellt.', ToastType.Success);
           this.tripInfoAvailable.set(true);
+          console.log('Final chunks:', this.responseChunks());
           return;
         }
 
