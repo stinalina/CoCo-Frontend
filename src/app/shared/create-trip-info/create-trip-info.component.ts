@@ -91,7 +91,6 @@ export class CreateTripInfoComponent  {
         if (chunk.isCompleted) {
           this.toastService.showToast('Ihre Reise wurde erfolgreich erstellt.', ToastType.Success);
           this.tripInfoAvailable.set(true);
-          console.log('Final chunks:', this.responseChunks());
           return;
         }
 
